@@ -1,23 +1,35 @@
 'use strict';
 
-const searchInput = document.getElementById('searchInput'); 
+const searchInput = document.getElementById('searchInput');
 const emailModalInput = document.getElementById('emailModalInput');
 const passwordModalInput = document.getElementById('passwordModalInput');
 const list = document.getElementById('list');
 const table = document.getElementById('table');
 const addButton = document.getElementById('addButton');
 const modalBody = document.getElementById('modal-body');
+const modalTitle = document.getElementById('modalLabel');
+
+modalTitle.textContent = 'Novo Email e Senha'
 
 
-let editingEmail, editingPassword = null; 
-let id = 1; 
+let editing = null;
+let id = 1;
 
 function add() {
   const emailText = emailModalInput.value;
-  const passwordText = passwordModalInput.value
+  const passwordText = passwordModalInput.value;
 
-  if(emailText.trim() !== '' || passwordText.trim() !== '') {
+  if (editing) {
+    const emailCell = editing.querySelector('.email-text');
+    const passwordCell = editing.querySelector('.password-text');
+    emailCell.textContent = emailText;
+    passwordCell.textContent = passwordText;
 
+    editing = null;
+
+    modalTitle.textContent = 'Novo Email e Senha'
+  } else {
+    if (emailText.trim() !== '' || passwordText.trim() !== '') {
       const newRow = document.createElement('tr');
       const idCell = document.createElement('td');
       const emailCell = document.createElement('td');
@@ -47,8 +59,7 @@ function add() {
       newRow.appendChild(passwordCell);
       newRow.appendChild(actionsCell);
       list.appendChild(newRow);
-
-    };
+    }
 
     if (emailText.trim() === '' || passwordText.trim() === '') {
       const alertDiv = document.createElement('div');
@@ -59,15 +70,15 @@ function add() {
       setTimeout(() => {
         alertDiv.remove();
       }, 1000);
-      return; 
-    };
+      return;
+    }
+  }
 
-    emailModalInput.value = '';
-    passwordModalInput.value = '';
-    const modal = bootstrap.Modal.getInstance(document.getElementById('inputModal'));
-    modal.hide();   
-
-  };
+  emailModalInput.value = '';
+  passwordModalInput.value = '';
+  const modal = bootstrap.Modal.getInstance(document.getElementById('inputModal'));
+  modal.hide();
+}
 
 function drop() {
   const row = event.target.closest('tr');
@@ -76,51 +87,15 @@ function drop() {
 
 function edit(event) {
   const row = event.target.closest('tr');
-  const idCell = row.querySelector('td:first-child');
+  const idCell = row.firstElementChild;
   const emailCell = row.querySelector('.email-text');
   const passwordCell = row.querySelector('.password-text');
-
   emailModalInput.value = emailCell.textContent;
   passwordModalInput.value = passwordCell.textContent;
+  editing = row;
 
-  editingEmail = emailCell.textContent;
-  editingPassword = passwordCell.textContent;
-
-  const modalTitle = document.getElementById('modalLabel');
-  modalTitle.textContent = 'Edite seu Email e Senha';
-
-  addButton.removeEventListener('click', add);
-  addButton.addEventListener('click', saveEdit)
-
-}
-
-function saveEdit(event) {
-  const row = event.target.closest('tr');
-  const editedEmail = emailModalInput.value;
-  const editedPassword = passwordModalInput.value;
-
-  if(editedEmail.trim() !== '' || editedPassword !== '') {
-    const emailCell = row.querySelector('.email-text');
-    const passwordCell = row.querySelector('.password-text');
-
-    emailCell.textContent = editedEmail;
-    passwordCell.textContent = editedPassword;
-  }
-
-  emailModalInput.value = '';
-  passwordModalInput.value = '';
-  editingEmail = null;
-  editingPassword = null;
-
-  const modalTitle = document.getElementById('modalLabel');
-  modalTitle.textContent = 'Novo Email';
-
-  addButton.removeEventListener('click', saveEdit);
-  addButton.addEventListener('click', add);
+  modalTitle.textContent = 'Editar Tarefa';
 
   const modal = bootstrap.Modal.getInstance(document.getElementById('inputModal'));
-  modal.hide(); 
-  
+  modal.show();
 }
-
-
