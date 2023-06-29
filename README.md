@@ -1,7 +1,7 @@
 # Gerenciador de Emails e Senhas
 
 <p align="center">
-  <img src="path_to_your_logo.png" alt="Logo" width="200" height="200">
+  <img src="/public/logo.png" alt="Logo" width="200" height="200">
 </p>
 
 Este projeto é um gerenciador de emails e senhas, desenvolvido em JavaScript e utilizando o framework Bootstrap para a interface. Ele permite adicionar, editar, excluir e pesquisar informações de emails e senhas em uma lista.
