@@ -99,3 +99,19 @@ function edit(event) {
   const modal = bootstrap.Modal.getInstance(document.getElementById('inputModal'));
   modal.show();
 }
+
+function search() {
+  const searchTerm = searchInput.value.toLowerCase();
+  const rows = Array.from(list.children); 
+  rows.forEach(row => {
+    const idCell = row.firstElementChild;
+    const emailText = row.querySelector('.email-text').textContent.toLowerCase();
+      if(emailText.includes(searchTerm) || searchTerm.trim() === '') {
+        row.style.display = 'table-row';
+      } else {
+        row.style.display = 'none';
+      }
+  });
+}
+
+searchInput.addEventListener('keyup', search);
